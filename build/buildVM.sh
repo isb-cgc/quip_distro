@@ -3,7 +3,7 @@ set -x
 
 EXTERNAL_IP_ADDRESS=104.198.21.81
 MACHINE_NAME=camic-viewer
-MACHINE_TAG=camic-viewer-processor
+MACHINE_TAG=http-server
 MACHINE_DESC="camicroscope viewer server for dev"
 PROJECT=isb-cgc
 CV_USER=cvproc
