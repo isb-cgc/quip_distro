@@ -26,6 +26,15 @@ Clone this repository.
 
     git clone https://github.com/SBU-BMI/quip_distro
          
+# Launching the camicroscope viewer VM for wrapping by the isb-cgc webapp in an iframe.
+
+The isb-cgc web app wraps an VM running camicroscope. To configure and launch such a VM execute:
+    $ build/buildVM.sh <external IP address>
+where <external IP address> is a previously allocated static external IP address.
+
+This script will create a suitably configured VM. It will then copy and execute build/install_deps.sh on the new VM. install_deps 
+installs git and docker and then builds the quip-viewer docker image, and finally runs that image.
+
 # Running the containers
 
 Before pulling and running the containers, create a data folder if it does not exist. The data folder will be used to 
