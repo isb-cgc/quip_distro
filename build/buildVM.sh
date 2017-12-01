@@ -30,12 +30,14 @@ gcloud compute instances add-tags "${MACHINE_NAME}" --tags "${MACHINE_TAG}" --pr
 # This is what you get after you log in:
 #
 
-sleep 10
-echo "AFTER LOGIN: gsutil cp gs://${UDU_DEPLOY_BUCKET}/install-deps.sh .; chmod u+x install-deps.sh; ./install-deps.sh"
+#sleep 10
+#echo "AFTER LOGIN: gsutil cp gs://${UDU_DEPLOY_BUCKET}/install-deps.sh .; chmod u+x install-deps.sh; ./install-deps.sh"
 
 #
 # By logging in as a user, the machine will create an account for that user:
 #
 
 sleep 10
-gcloud compute ssh --project "${PROJECT}" --zone ${ZONE} "${USER_AND_MACHINE}"
+#gcloud compute ssh --project "${PROJECT}" --zone ${ZONE} "${USER_AND_MACHINE}"
+gcloud compute scp ./build/install_deps.sh "${USER_AND_MACHINE}":/home/"${CV_USER}" --zone "${ZONE}" --project "${PROJECT}"
+gcloud compute ssh --zone "${ZONE}" "${USER_AND_MACHINE_NAME}" -- '/home/'"${CV_USER}"'/install_deps.sh'

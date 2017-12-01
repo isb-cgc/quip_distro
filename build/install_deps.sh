@@ -34,7 +34,7 @@ sudo apt-get update
 
 sudo apt-get -y install docker-engine
 
-git clone isb-cgc-webapp https://github.com/isb-cgc/quip_distro.git
+git clone -b isb-cgc-webapp https://github.com/isb-cgc/quip_distro.git
 
 cd quip_distro
 
