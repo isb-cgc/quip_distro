@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 set -x
 
-EXTERNAL_IP_ADDRESS=104.198.21.81
+if [ "$#" -ne 1 ]; then
+    echo "Usage: ./$PROGNAME <external IP address>"
+    exit 1;
+fi
+
+
+EXTERNAL_IP_ADDRESS=$1
 MACHINE_NAME=camic-viewer
 MACHINE_TAG=http-server
 MACHINE_DESC="camicroscope viewer server for dev"
@@ -40,4 +46,4 @@ gcloud compute instances add-tags "${MACHINE_NAME}" --tags "${MACHINE_TAG}" --pr
 sleep 10
 #gcloud compute ssh --project "${PROJECT}" --zone ${ZONE} "${USER_AND_MACHINE}"
 gcloud compute scp ./build/install_deps.sh "${USER_AND_MACHINE}":/home/"${CV_USER}" --zone "${ZONE}" --project "${PROJECT}"
-gcloud compute ssh --zone "${ZONE}" "${USER_AND_MACHINE_NAME}" -- '/home/'"${CV_USER}"'/install_deps.sh'
+gcloud compute ssh --zone "${ZONE}" "${USER_AND_MACHINE}" -- '/home/'"${CV_USER}"'/install_deps.sh'

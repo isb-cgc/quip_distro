@@ -5,7 +5,7 @@ set -x
 VIEWER_VERSION=0.9
 
 ### Install git
-https://github.com/isb-cgc/quip_distro.git
+sudo apt-get -y install git
 
 ### Install docker
 #sudo apt-get -y install \
@@ -14,7 +14,7 @@ https://github.com/isb-cgc/quip_distro.git
 #     curl \
 #     software-properties-common
 
-sudo apt-get install --no-install-recommends \
+sudo apt-get -y install --no-install-recommends \
     apt-transport-https \
     curl \
     software-properties-common
@@ -38,4 +38,4 @@ git clone -b isb-cgc-webapp https://github.com/isb-cgc/quip_distro.git
 
 cd quip_distro
 
-./run_viewer $VIEWER_VERSION
+./run_viewer.sh $VIEWER_VERSION
