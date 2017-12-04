@@ -36,6 +36,14 @@ sudo apt-get -y install docker-engine
 
 git clone -b isb-cgc-webapp https://github.com/isb-cgc/quip_distro.git
 
-cd quip_distro
+#cd quip_distro
 
-./run_viewer.sh $VIEWER_VERSION
+#./run_viewer.sh $VIEWER_VERSION
+
+### Automatically run the viewer after a reboot
+sudo sed -i '/By default/a \'$HOME'/quip_distro/run_viewer.sh '$VIEWER_VERSION' || exit 1' /etc/rc.local 
+
+sudo apt-get -y update
+sudo apt-get -y upgrade
+
+sudo reboot
