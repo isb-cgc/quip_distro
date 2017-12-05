@@ -45,6 +45,6 @@ fi
 
 ## Run viewer container
 viewer_container=$(sudo docker run --privileged --name=quip-viewer --net=quip_nw -itd \
-    -p $VIEWER_PORT:80 \
+    -p $VIEWER_PORT:5001 \
     quip_viewer:$VIEWER_VERSION)
 echo "Started viewer container: " $viewer_container
