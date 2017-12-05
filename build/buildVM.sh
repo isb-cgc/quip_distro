@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -x
+#set -x
 
 if [ "$#" -ne 1 ]; then
     echo "Usage: ./$PROGNAME <prod|dev|test|uat>"
@@ -48,13 +48,15 @@ then
     gcloud compute addresses create $EXTERNAL_IP_ADDRESS --region $REGION --project $PROJECT
 fi
 #
-# Spin up the VM:
+# Delete existing VM, then spin up the new one:
 #
-instances=$(gcloud compute instances list --project $PROJECT|grep $MACHINE_NAME)
-if [ -z "$instances" ]
+instances=$(gcloud compute instances list --project $PROJECT --filter="zone:(us-west1-b)"|grep $MACHINE_NAME)
+if [ -n "$instances" ]
 then
-    gcloud compute instances create "${MACHINE_NAME}" --description "${MACHINE_DESC}" --zone "${ZONE}" --machine-type "n1-standard-2" --image-project "ubuntu-os-cloud" --image-family "ubuntu-1404-lts" --project "${PROJECT}" --address="${EXTERNAL_IP_ADDRESS}"
+    gcloud compute instances delete -q "${MACHINE_NAME}" --zone "${ZONE}" --project "${PROJECT}"
 fi
+gcloud compute instances create "${MACHINE_NAME}" --description "${MACHINE_DESC}" --zone "${ZONE}" --machine-type "n1-standard-2" --image-project "ubuntu-os-cloud" --image-family "ubuntu-1404-lts" --project "${PROJECT}" --address="${EXTERNAL_IP_ADDRESS}"
+#fi
 
 #
 # Add tag to machine:
