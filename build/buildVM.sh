@@ -23,14 +23,14 @@ else
     exit 1;
 fi
 
-if [ $1 == 'uat' ]
-then
-	MACHINE_TAG=
-else
-	MACHINE_TAG=http-server
-fi
+#if [ $1 == 'uat' ]
+#then
+#	MACHINE_TAG=
+#else
+#	MACHINE_TAG=http-server
+#fi
 
-
+MACHINE_TAG=camic-viewer-vm
 BASE_NAME=camic-viewer
 EXTERNAL_IP_ADDRESS=$BASE_NAME-$1
 MACHINE_NAME=$BASE_NAME-$1
