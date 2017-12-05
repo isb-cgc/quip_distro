@@ -27,7 +27,7 @@ sudo docker network create quip_nw
 #mkdir -p $IMAGES_DIR 
 #mkdir -p $DATABASE_DIR
 
-VIEWER_PORT=80
+VIEWER_PORT=5001
 #IMAGELOADER_PORT=6002
 #FINDAPI_PORT=3000
 
@@ -45,6 +45,6 @@ fi
 
 ## Run viewer container
 viewer_container=$(sudo docker run --privileged --name=quip-viewer --net=quip_nw -itd \
-    -p $VIEWER_PORT:5001 \
+    -p $VIEWER_PORT:80 \
     quip_viewer:$VIEWER_VERSION)
 echo "Started viewer container: " $viewer_container
