@@ -3,5 +3,4 @@
 # We want to execute run_viewer.sh as the same user that instantiated the VM.
 
 cd /home/cvproc/quip_distro
-
-sudo --user cvproc ./run_viewer.sh $1
+./run_viewer.sh $1
