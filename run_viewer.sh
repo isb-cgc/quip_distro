@@ -4,8 +4,8 @@ set -x
 
 PROGNAME=$(basename "$0")
 
-if [ "$#" -ne 1 ]; then
-    echo "Usage: ./$PROGNAME <quip-viewer version>"
+if [ "$#" -ne 4 ]; then
+    echo "Usage: ./$PROGNAME <quip-viewer version> <admin email> <ip addr> <server alias>"
     exit 1;
 fi
 
@@ -45,6 +45,10 @@ fi
 
 ## Run viewer container
 viewer_container=$(sudo docker run --privileged --name=quip-viewer --net=quip_nw -itd \
-    -p $VIEWER_PORT:80 \
+    -p $VIEWER_PORT:443 \
+    -e SERVER_ADMIN=$2 \
+    -e SERVER_NAME=$3 \
+    -e SERVER_ALIAS=$4 \
+    -v /etc/apache2/ssl:/etc/apache2/ssl \
     quip_viewer:$VIEWER_VERSION)
 echo "Started viewer container: " $viewer_container

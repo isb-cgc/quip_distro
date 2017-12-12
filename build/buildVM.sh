@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#set -x
+set -x
 
 if [ "$#" -ne 1 ]; then
     echo "Usage: ./$PROGNAME <prod|dev|test|uat>"
@@ -7,10 +7,10 @@ if [ "$#" -ne 1 ]; then
 fi
 
 #arr = ['prod','dev','test','uat']
-declare -a arr=('prod' 'dev' 'test' 'uat')
+declare -a arr=('prod' 'dev' 'xdev' 'test' 'uat')
 if [[ ${arr[*]} =~ $1 ]]
 then
-    declare -a arr1=('prod','dev')
+    declare -a arr1=('prod','dev','xdev')
 
     if [[ ${arr1[*]} =~ $1 ]]
     then
@@ -40,6 +40,9 @@ USER_AND_MACHINE=${CV_USER}@${MACHINE_NAME}
 REGION=us-west1
 ZONE=$REGION-b
 
+SERVER_ADMIN=wl@isb-cgc.org
+SERVER_ALIAS=www.mvm-dot-isb-cgc.appspot.com
+
 #
 # Create static external IP address if not already existan
 addresses=$(gcloud compute addresses list --project $PROJECT|grep $EXTERNAL_IP_ADDRESS)
@@ -47,6 +50,11 @@ if [ -z "$addresses" ]
 then
     gcloud compute addresses create $EXTERNAL_IP_ADDRESS --region $REGION --project $PROJECT
 fi
+### Get the numeric IP addr as SERVER_NAME
+ADDR_STRING=$(gcloud compute addresses describe $MACHINE_NAME --region $REGION | grep address:)
+IFS=', ' read -r -a addr_string_array <<< "$ADDR_STRING"
+SERVER_NAME="${addr_string_array[1]}"
+
 #
 # Delete existing VM, then spin up the new one:
 #
@@ -59,7 +67,7 @@ gcloud compute instances create "${MACHINE_NAME}" --description "${MACHINE_DESC}
 #fi
 
 #
-# Add tag to machine:
+# Add network tag to machine:
 #
 sleep 10
 if [ -n "$MACHINE_TAG" ]
@@ -72,4 +80,4 @@ fi
 #
 sleep 10
 gcloud compute scp $(dirname $0)/install_deps.sh "${USER_AND_MACHINE}":/home/"${CV_USER}" --zone "${ZONE}" --project "${PROJECT}"
-gcloud compute ssh --zone "${ZONE}" --project "${PROJECT}" "${USER_AND_MACHINE}" -- '/home/'"${CV_USER}"'/install_deps.sh'
+gcloud compute ssh --zone "${ZONE}" --project "${PROJECT}" "${USER_AND_MACHINE}" -- '/home/'"${CV_USER}"'/install_deps.sh' "${SERVER_ADMIN}" "${SERVER_NAME}" "${SERVER_ALIAS}"
