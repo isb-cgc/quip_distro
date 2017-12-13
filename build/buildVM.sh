@@ -35,6 +35,7 @@ BASE_NAME=camic-viewer
 EXTERNAL_IP_ADDRESS=$BASE_NAME-$1
 MACHINE_NAME=$BASE_NAME-$1
 MACHINE_DESC="camicroscope viewer server for "$1
+MACHINE_TYPE="n1-standard-2"
 CV_USER=cvproc
 USER_AND_MACHINE=${CV_USER}@${MACHINE_NAME}
 REGION=us-west1
@@ -63,7 +64,7 @@ if [ -n "$instances" ]
 then
     gcloud compute instances delete -q "${MACHINE_NAME}" --zone "${ZONE}" --project "${PROJECT}"
 fi
-gcloud compute instances create "${MACHINE_NAME}" --description "${MACHINE_DESC}" --zone "${ZONE}" --machine-type "n1-standard-2" --image-project "ubuntu-os-cloud" --image-family "ubuntu-1404-lts" --project "${PROJECT}" --address="${EXTERNAL_IP_ADDRESS}"
+gcloud compute instances create "${MACHINE_NAME}" --description "${MACHINE_DESC}" --zone "${ZONE}" --machine-type "${MACHINE_TYPE}" --image-project "ubuntu-os-cloud" --image-family "ubuntu-1404-lts" --project "${PROJECT}" --address="${EXTERNAL_IP_ADDRESS}"
 #fi
 
 #
