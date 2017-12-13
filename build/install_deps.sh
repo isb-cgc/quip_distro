@@ -39,7 +39,7 @@ sudo sed -i '/By default/a \'$HOME'/quip_distro/startup.sh '$VIEWER_VERSION' '$S
 git clone -b isb-cgc-webapp https://github.com/isb-cgc/quip_distro.git
 
 # Install Tenable package (package previously downloaded from tenable.io)
-gsutil cp  gs://isb-cgc-misc/NessusAgent-6.11.2-ubuntu1110_amd64.deb /tmp
+sudo gsutil cp  gs://isb-cgc-misc/NessusAgent-6.11.2-ubuntu1110_amd64.deb /tmp
 sudo  dpkg -i /tmp/NessusAgent-6.11.2-ubuntu1110_amd64.deb
 # Link agent (key obtained from tenable.io web app)
 sudo /opt/nessus_agent/sbin/nessuscli agent link --key=***REMOVED*** --cloud
