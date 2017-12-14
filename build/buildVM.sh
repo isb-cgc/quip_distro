@@ -18,6 +18,15 @@ then
     else
 	PROJECT=isb-cgc-$1
     fi
+
+    declare -a arr2=('dev','prod')
+
+    if [[ ${arr2[*]} =~ $1 ]]
+    then
+	SSL_BUCKET=web-app-deployment-files/$1
+    else
+	SSL_BUCKET=webapp-deployment-files-$1
+    fi
 else
     echo "Usage: ./$PROGNAME <prod|dev|test|uat> <<external IP address>"
     exit 1;
@@ -52,7 +61,7 @@ then
     gcloud compute addresses create $EXTERNAL_IP_ADDRESS --region $REGION --project $PROJECT
 fi
 ### Get the numeric IP addr as SERVER_NAME
-ADDR_STRING=$(gcloud compute addresses describe $MACHINE_NAME --region $REGION | grep address:)
+ADDR_STRING=$(gcloud compute addresses describe $MACHINE_NAME --region $REGION --project $PROJECT | grep address:)
 IFS=', ' read -r -a addr_string_array <<< "$ADDR_STRING"
 SERVER_NAME="${addr_string_array[1]}"
 
@@ -81,4 +90,4 @@ fi
 #
 sleep 10
 gcloud compute scp $(dirname $0)/install_deps.sh "${USER_AND_MACHINE}":/home/"${CV_USER}" --zone "${ZONE}" --project "${PROJECT}"
-gcloud compute ssh --zone "${ZONE}" --project "${PROJECT}" "${USER_AND_MACHINE}" -- '/home/'"${CV_USER}"'/install_deps.sh' "${SERVER_ADMIN}" "${SERVER_NAME}" "${SERVER_ALIAS}"
+gcloud compute ssh --zone "${ZONE}" --project "${PROJECT}" "${USER_AND_MACHINE}" -- '/home/'"${CV_USER}"'/install_deps.sh' "${SERVER_ADMIN}" "${SERVER_NAME}" "${SERVER_ALIAS}" "${SSL_BUCKET}"
