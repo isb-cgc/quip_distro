@@ -7,10 +7,10 @@ if [ "$#" -ne 1 ]; then
 fi
 
 #arr = ['prod','dev','test','uat']
-declare -a arr=('prod' 'dev' 'xdev' 'test' 'uat')
+declare -a arr=('prod' 'dev' 'test' 'uat')
 if [[ ${arr[*]} =~ $1 ]]
 then
-    declare -a arr1=('prod','dev','xdev')
+    declare -a arr1=('prod','dev')
 
     if [[ ${arr1[*]} =~ $1 ]]
     then
@@ -26,6 +26,19 @@ then
 	SSL_BUCKET=web-app-deployment-files/$1
     else
 	SSL_BUCKET=webapp-deployment-files-$1
+    fi
+
+    if [ $1 == 'prod' ]
+    then
+	WEBAPP=https://isb-cgc.appspot.com/
+    elif [ $1 == 'dev' ]
+    then
+	WEBAPP=https://mvm-dot-isb-cgc.appspot.com/
+    elif [ $1 == 'test' ]
+    then
+	WEBAPP=https://isb-cgc-test.appspot.com/
+    else 
+	WEBAPP=https://isb-cgc-uat.appspot.com/
     fi
 else
     echo "Usage: ./$PROGNAME <prod|dev|test|uat> <<external IP address>"
@@ -90,4 +103,4 @@ fi
 #
 sleep 10
 gcloud compute scp $(dirname $0)/install_deps.sh "${USER_AND_MACHINE}":/home/"${CV_USER}" --zone "${ZONE}" --project "${PROJECT}"
-gcloud compute ssh --zone "${ZONE}" --project "${PROJECT}" "${USER_AND_MACHINE}" -- '/home/'"${CV_USER}"'/install_deps.sh' "${SERVER_ADMIN}" "${SERVER_NAME}" "${SERVER_ALIAS}" "${SSL_BUCKET}"
+gcloud compute ssh --zone "${ZONE}" --project "${PROJECT}" "${USER_AND_MACHINE}" -- '/home/'"${CV_USER}"'/install_deps.sh' "${SERVER_ADMIN}" "${SERVER_NAME}" "${SERVER_ALIAS}" "${SSL_BUCKET}" "${WEBAPP}"

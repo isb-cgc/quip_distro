@@ -2,10 +2,15 @@
 
 set -x
 
+# $1=VIEWER_VERSION                                                                                                                                           
+# $2=SERVER_ADMIN                                                                                                                                             
+# $3=SERVER_NAME                                                                                                                                              
+# $4=SERVER_ALIAS                                                                                                                                            
+# $5=WEBAPP                                                                                                                                                   
 PROGNAME=$(basename "$0")
 
-if [ "$#" -ne 4 ]; then
-    echo "Usage: ./$PROGNAME <quip-viewer version> <admin email> <ip addr> <server alias>"
+if [ "$#" -ne 5 ]; then
+    echo "Usage: ./$PROGNAME <quip-viewer version> <admin email> <ip addr> <server alias> <webapp>"
     exit 1;
 fi
 
@@ -49,6 +54,7 @@ viewer_container=$(sudo docker run --privileged --name=quip-viewer --net=quip_nw
     -e SERVER_ADMIN=$2 \
     -e SERVER_NAME=$3 \
     -e SERVER_ALIAS=$4 \
+    -e WEBAPP=$5 \
     -v /etc/apache2/ssl:/etc/apache2/ssl \
     quip_viewer:$VIEWER_VERSION)
 echo "Started viewer container: " $viewer_container
