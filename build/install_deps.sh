@@ -7,6 +7,7 @@ SERVER_ADMIN=$1
 SERVER_NAME=$2
 SERVER_ALIAS=$3
 SSL_BUCKET=$4
+WEBAPP=$5
 
 ### Trying the following to avoid spurious "Could not get lock /var/lib/dpkg/lock"
 ### errors that are sometimes seen with the following installs
@@ -35,7 +36,7 @@ sudo gsutil cp gs://$SSL_BUCKET/ssl/camic-viewer-apache.key /etc/apache2/ssl
 
 ### Automatically run a script on rebootingr
 # sudo sed -i '/By default/a \'$HOME'/quip_distro/run_viewer.sh '$VIEWER_VERSION' || exit 1' /etc/rc.local 
-sudo sed -i '/By default/a \'$HOME'/quip_distro/startup.sh '$VIEWER_VERSION' '$SERVER_ADMIN' '$SERVER_NAME' '$SERVER_ALIAS' || exit 1' /etc/rc.local 
+sudo sed -i '/By default/a \'$HOME'/quip_distro/startup.sh '$VIEWER_VERSION' '$SERVER_ADMIN' '$SERVER_NAME' '$SERVER_ALIAS' '$WEBAPP' || exit 1' /etc/rc.local 
 ### The startup script is in the quip_distro repo
 git clone -b isb-cgc-webapp https://github.com/isb-cgc/quip_distro.git
 
