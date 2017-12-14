@@ -6,6 +6,7 @@ VIEWER_VERSION=0.9
 SERVER_ADMIN=$1
 SERVER_NAME=$2
 SERVER_ALIAS=$3
+SSL_BUCKET=$4
 
 ### Trying the following to avoid spurious "Could not get lock /var/lib/dpkg/lock"
 ### errors that are sometimes seen with the following installs
@@ -29,8 +30,8 @@ sudo apt-get -y install docker-engine
 
 ### Get https certificates
 sudo mkdir -p /etc/apache2/ssl
-sudo gsutil cp gs://web-app-deployment-files/prod/ssl/camic-viewer-apache.crt /etc/apache2/ssl
-sudo gsutil cp gs://web-app-deployment-files/prod/ssl/camic-viewer-apache.key /etc/apache2/ssl
+sudo gsutil cp gs://$SSL_BUCKET/ssl/camic-viewer-apache.crt /etc/apache2/ssl
+sudo gsutil cp gs://$SSL_BUCKET/ssl/camic-viewer-apache.key /etc/apache2/ssl
 
 ### Automatically run a script on rebootingr
 # sudo sed -i '/By default/a \'$HOME'/quip_distro/run_viewer.sh '$VIEWER_VERSION' || exit 1' /etc/rc.local 
