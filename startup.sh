@@ -12,8 +12,8 @@ set -x
 
 PROGNAME=$(basename "$0")
 
-if [ "$#" -ne 4 ]; then
-    echo "Usage: ./$PROGNAME <quip-viewer version> <admin email> <ip addr> <server alias>"
+if [ "$#" -ne 5 ]; then
+    echo "Usage: ./$PROGNAME <quip-viewer version> <admin email> <ip addr> <server alias> <webapp>"
     exit 1;
 fi
 
