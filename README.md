@@ -9,7 +9,7 @@ To configure and launch such a VM, execute:
 
     build/buildVM.sh <VM type>
 
-where <VM type> is one of prod, dev, test, or uat.
+where `<VM type>` is one of prod, dev, test, or uat.
 
 This script will first create a static external IP address, also called camic-viewer-xxx, if such a IP address does not already exist. It will then delete any existing VM having that name and launch a new suitably configured VM. It will then scp copy and execute build/install_deps.sh on the new VM. install_deps.sh installs git and docker, performs apt-get update/upgrade and reboots the VM. On rebooting, startup.sh script builds the quip-viewer docker image, if it does not already exist, and runs that image.
 
