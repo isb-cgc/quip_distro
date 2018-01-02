@@ -1,5 +1,18 @@
 QuIP is a web accessible toolset designed to support analysis, management, and exploration of whole slide tissue images for cancer research. The QuIP system consists of a set of docker containers, which provide analysis execution and data management backend services, and web applications to load and visualize whole slide tissue images (in [OpenSlide](http://openslide.org) supported formats), run nuclear segmentation analyses on image tiles, and visualize and explore the analysis results. 
 
+## Launching a CaMicroscope viewer VM for the isb-cgc webapp.
+
+The isb-cgc web app wraps camicroscope in an iframe. There are four VMs, each running camicroscope for different purposes.
+These VMs are named "camic-viewer-xxx" where xxx is one of prod, dev, test or uat.
+
+To configure and launch such a VM, execute:
+    $ build/buildVM.sh <VM type>
+where <VM type> is one of prod, dev, test, or uat.
+
+This script will first create a static external IP address, also called camic-viewer-xxx, if such a IP address does not already exist. It will then delete any existing VM having that name and launch a new suitably configured VM. It will then scp copy and execute build/install_deps.sh on the new VM. install_deps.sh installs git and docker, performs apt-get update/upgrade and reboots the VM. On rebooting, startup.sh script builds the quip-viewer docker image, if it does not already exist, and runs that image.
+
+Note that subsequent discussion applies to the master full QuIP implementation.
+
 ## QuIP Video
 
 This [video](https://www.youtube.com/watch?v=dK4c6ti1Dvc) shows the basic usage of the QuIP system.
@@ -26,15 +39,6 @@ Clone this repository.
 
     git clone https://github.com/SBU-BMI/quip_distro
          
-# Launching the camicroscope viewer VM for wrapping by the isb-cgc webapp in an iframe.
-
-The isb-cgc web app wraps an VM running camicroscope. To configure and launch such a VM execute:
-    $ build/buildVM.sh <external IP address>
-where <external IP address> is a previously allocated static external IP address.
-
-This script will create a suitably configured VM. It will then copy and execute build/install_deps.sh on the new VM. install_deps 
-installs git and docker and then builds the quip-viewer docker image, and finally runs that image.
-
 # Running the containers
 
 Before pulling and running the containers, create a data folder if it does not exist. The data folder will be used to 
