@@ -40,14 +40,6 @@ then
     else 
 	WEBAPP=isb-cgc-uat.appspot.com
     fi
-
-    if [ $1 == 'prod']
-    then
-	IP_ADDRESS=10.240.0.56
-    else
-	IP_ADDRESS=10.240.0.57
-    fi
-
 else
     echo "Usage: ./$PROGNAME <prod|dev|test|uat> <<external IP address>"
     exit 1;
@@ -62,7 +54,7 @@ fi
 
 MACHINE_TAG=camic-viewer-vm
 BASE_NAME=camic-viewer
-#STATIC_IP_ADDRESS=$BASE_NAME-$1
+STATIC_IP_ADDRESS=$BASE_NAME-$1
 MACHINE_NAME=$BASE_NAME-$1
 MACHINE_DESC="camicroscope viewer server for "$1
 MACHINE_TYPE="n1-standard-2"
@@ -78,15 +70,15 @@ SERVER_ALIAS=www.mvm-dot-isb-cgc.appspot.com
 
 #
 # Create static external IP address if not already existan
-#addresses=$(gcloud compute addresses list --project $PROJECT|grep $STATIC_IP_ADDRESS)
-#if [ -z "$addresses" ]
-#then
-#    gcloud compute addresses create $STATIC_IP_ADDRESS --region $VM_REGION --project $PROJECT
-#fi
+addresses=$(gcloud compute addresses list --project $PROJECT|grep $STATIC_IP_ADDRESS)
+if [ -z "$addresses" ]
+then
+    gcloud compute addresses create $STATIC_IP_ADDRESS --region $VM_REGION --project $PROJECT
+fi
 ### Get the numeric IP addr as SERVER_NAME
-#ADDR_STRING=$(gcloud compute addresses describe $MACHINE_NAME --region $VM_REGION --project $PROJECT | grep address:)
-#IFS=', ' read -r -a addr_string_array <<< "$ADDR_STRING"
-#SERVER_NAME="${addr_string_array[1]}"
+ADDR_STRING=$(gcloud compute addresses describe $MACHINE_NAME --region $VM_REGION --project $PROJECT | grep address:)
+IFS=', ' read -r -a addr_string_array <<< "$ADDR_STRING"
+SERVER_NAME="${addr_string_array[1]}"
 
 #
 # Delete existing VM, then spin up the new one:
@@ -96,9 +88,7 @@ if [ -n "$instances" ]
 then
     gcloud compute instances delete -q "${MACHINE_NAME}" --zone "${ZONE}" --project "${PROJECT}"
 fi
-#gcloud compute instances create "${MACHINE_NAME}" --description "${MACHINE_DESC}" --zone "${ZONE}" --machine-type "${MACHINE_TYPE}" --image-project "ubuntu-os-cloud" --image-family "ubuntu-1404-lts" --project "${PROJECT}" --address="${STATIC_IP_ADDRESS}"
-#fi
-gcloud compute instances create "${MACHINE_NAME}" --description "${MACHINE_DESC}" --zone "${ZONE}" --machine-type "${MACHINE_TYPE}" --image-project "ubuntu-os-cloud" --image-family "ubuntu-1404-lts" --project "${PROJECT}" --private-network-ip="${IP_ADDRESS}"
+gcloud compute instances create "${MACHINE_NAME}" --description "${MACHINE_DESC}" --zone "${ZONE}" --machine-type "${MACHINE_TYPE}" --image-project "ubuntu-os-cloud" --image-family "ubuntu-1404-lts" --project "${PROJECT}" --address="${STATIC_IP_ADDRESS}"
 #fi
 
 #
