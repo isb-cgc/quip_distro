@@ -40,13 +40,20 @@ sudo sed -i '/By default/a \'$HOME'/quip_distro/startup.sh '$VIEWER_VERSION' '$S
 ### The startup script is in the quip_distro repo
 git clone -b isb-cgc-webapp https://github.com/isb-cgc/quip_distro.git
 
-# Install Tenable package (package previously downloaded from tenable.io)
-sudo gsutil cp  gs://isb-cgc-misc/NessusAgent-6.11.2-ubuntu1110_amd64.deb /tmp
-sudo  dpkg -i /tmp/NessusAgent-6.11.2-ubuntu1110_amd64.deb
+# Install package (package previously downloaded from tenable.io)
+sudo gsutil cp  gs://isb-cgc-misc/compute-helpers/NessusAgent-7.0.2-debian6_amd64.deb /tmp
+sudo  dpkg -i /tmp/NessusAgent-7.0.2-debian6_amd64.deb
 # Link agent (key obtained from tenable.io web app)
 sudo /opt/nessus_agent/sbin/nessuscli agent link --key=***REMOVED*** --cloud
 # Start agent
 sudo /etc/init.d/nessusagent start
+
+#Install clamav
+sudo apt install -y clamav clamav-daemon
+wget https://raw.githubusercontent.com/isb-cgc/ISB-CGC-Cron/master/gce_vm_tasks/virus_scan.sh?token=AKBQyIdXio073v7hMOxWHnXCCpDqxgl7ks5alcxdwA%3D%3D -O virus_scan
+chmod 0755 virus_scan
+sudo cp virus_scan /etc/cron.daily/
+sudo sed -ie 's/Checks 24/Checks 2/' freshclam.conf
 
 ### Do the update/upgrade thing
 sudo apt-get -y update
