@@ -56,6 +56,6 @@ viewer_container=$(sudo docker run --privileged --name=quip-viewer --net=quip_nw
     -e SERVER_ALIAS=$4 \
     -e WEBAPP=$5 \
     -v /etc/apache2/ssl:/etc/apache2/ssl \
-    -v /mnt/disks/imaging-west:/data/images/imaging-west \
+    -v /mnt/disks/imaging-west:/data/images/filestore \
     quip_viewer:$VIEWER_VERSION)
 echo "Started viewer container: " $viewer_container
