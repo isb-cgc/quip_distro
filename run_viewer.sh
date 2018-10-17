@@ -32,7 +32,7 @@ sudo docker network create quip_nw
 #mkdir -p $IMAGES_DIR 
 #mkdir -p $DATABASE_DIR
 
-VIEWER_PORT=8042
+VIEWER_PORT=5001
 #IMAGELOADER_PORT=6002
 #FINDAPI_PORT=3000
 
