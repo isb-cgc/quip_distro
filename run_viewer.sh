@@ -3,14 +3,14 @@
 set -x
 
 # $1=VIEWER_VERSION            
-# $2=BRANCH
-# $3=WEBAPP                                                                                                                                                   
+# $2=WEBAPP                                                                                                                                                   
 PROGNAME=$(basename "$0")
 
-if [ "$#" -ne 3 ]; then
-    echo "Usage: ./$PROGNAME <quip-viewer version> <branch> <webapp>"
+if [ "$#" -ne 2 ]; then
+    echo "Usage: ./$PROGNAME <quip-viewer version> <webapp>"
     exit 1;
 fi
+
 
 echo "Removing existing containers"
 sudo docker rm -f quip-viewer
@@ -19,8 +19,7 @@ echo "Starting Containers..."
 
 #VERSION=1.0
 VIEWER_VERSION=$1
-BRANCH=$2
-WEBAPP=$3
+WEBAPP=$2
 
 #STORAGE_FOLDER=$PWD/data
 
@@ -43,15 +42,18 @@ VIEWER_PORT=5001
 #\cp -rf configs $STORAGE_FOLDER/.
 #CONFIGS_DIR=$(echo $STORAGE_FOLDER/configs)
 
-if [[ "$(docker images -q quip-viewer:$VIEWER_VERSION 2> /dev/null)" == "" ]]; then
-  git clone -b $BARNCH https://github.com/isb-cgc/ViewerDockerContainer.git ./ViewerDockerContainer
-  sudo docker build -t quip_viewer:$VIEWER_VERSION -f ViewerDockerContainer/Dockerfile ViewerDockerContainer
-fi
+### Get the previously created viewer container from GCR 
+docker pull gcr.io/isb-cgc/quip_viewer:$VIEWER_VERSION
+
+#if [[ "$(docker images -q quip-viewer:$VIEWER_VERSION 2> /dev/null)" == "" ]]; then
+#  git clone -b $BRANCH https://github.com/isb-cgc/ViewerDockerContainer.git ./ViewerDockerContainer
+#  sudo docker build -t quip_viewer:$VIEWER_VERSION -f ViewerDockerContainer/Dockerfile ViewerDockerContainer
+#fi
 
 ## Run viewer container
 viewer_container=$(sudo docker run --privileged --name=quip-viewer --net=quip_nw -itd \
     -p $VIEWER_PORT:80 \
     -e WEBAPP=$WEBAPP \
     -v /etc/apache2/ssl:/etc/apache2/ssl \
-    quip_viewer:$VIEWER_VERSION)
+    gcr.io/isb-cgc/quip_viewer:$VIEWER_VERSION)
 echo "Started viewer container: " $viewer_container
