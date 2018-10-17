@@ -10,6 +10,8 @@ sudo apt-get install -y nginx
 sudo cp ./nginx/nginx.conf /etc/nginx/nginx.conf
 
 # Now install certbot
+sudo rm -rf /etc/letsencrypt
+
 sudo apt-get update
 sudo apt-get install software-properties-common
 sudo add-apt-repository -y ppa:certbot/certbot
@@ -31,7 +33,8 @@ sudo certbot --nginx -m $SERVER_ADMIN -d $MACHINE_URL --redirect --agree-tos --n
 # Edit the letsencrypt config file so as to not enable TLS v1.0
 sudo sed -ie 's/TLSv1 / /' /etc/letsencrypt/options-ssl-nginx.conf
 
-# Start nginx
+# Restart nginx
+sudo nginx -s stop
 sudo nginx
 
 
