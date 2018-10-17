@@ -2,15 +2,13 @@
 
 set -x
 
-# $1=VIEWER_VERSION                                                                                                                                           
-# $2=SERVER_ADMIN                                                                                                                                             
-# $3=SERVER_NAME                                                                                                                                              
-# $4=SERVER_ALIAS                                                                                                                                            
-# $5=WEBAPP                                                                                                                                                   
+# $1=VIEWER_VERSION            
+# $2=BRANCH
+# $3=WEBAPP                                                                                                                                                   
 PROGNAME=$(basename "$0")
 
-if [ "$#" -ne 5 ]; then
-    echo "Usage: ./$PROGNAME <quip-viewer version> <admin email> <ip addr> <server alias> <webapp>"
+if [ "$#" -ne 3 ]; then
+    echo "Usage: ./$PROGNAME <quip-viewer version> <branch> <webapp>"
     exit 1;
 fi
 
@@ -21,6 +19,8 @@ echo "Starting Containers..."
 
 #VERSION=1.0
 VIEWER_VERSION=$1
+BRANCH=$2
+WEBAPP=$3
 
 #STORAGE_FOLDER=$PWD/data
 
@@ -44,17 +44,14 @@ VIEWER_PORT=5001
 #CONFIGS_DIR=$(echo $STORAGE_FOLDER/configs)
 
 if [[ "$(docker images -q quip-viewer:$VIEWER_VERSION 2> /dev/null)" == "" ]]; then
-  git clone -b isb-cgc-webapp https://github.com/isb-cgc/ViewerDockerContainer.git ./ViewerDockerContainer
+  git clone -b $BARNCH https://github.com/isb-cgc/ViewerDockerContainer.git ./ViewerDockerContainer
   sudo docker build -t quip_viewer:$VIEWER_VERSION -f ViewerDockerContainer/Dockerfile ViewerDockerContainer
 fi
 
 ## Run viewer container
 viewer_container=$(sudo docker run --privileged --name=quip-viewer --net=quip_nw -itd \
     -p $VIEWER_PORT:80 \
-    -e SERVER_ADMIN=$2 \
-    -e SERVER_NAME=$3 \
-    -e SERVER_ALIAS=$4 \
-    -e WEBAPP=$5 \
+    -e WEBAPP=$WEBAPP \
     -v /etc/apache2/ssl:/etc/apache2/ssl \
     quip_viewer:$VIEWER_VERSION)
 echo "Started viewer container: " $viewer_container

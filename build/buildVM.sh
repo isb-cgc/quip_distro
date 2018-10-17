@@ -6,6 +6,9 @@ if [ "$#" -ne 1 ]; then
     exit 1;
 fi
 
+#Set this according to the branch being developed/executed
+BRANCH=isb-cgc-webapp-certbot
+
 #arr = ['prod','dev','test','uat']
 declare -a arr=('prod' 'dev' 'test' 'uat')
 if [[ ${arr[*]} =~ $1 ]]
@@ -65,6 +68,7 @@ BASE_NAME=camic-viewer
 STATIC_IP_ADDRESS=$BASE_NAME-$1
 MACHINE_NAME=$BASE_NAME-$1
 MACHINE_DESC="camicroscope viewer server for "$1
+MACHINE_URL=$MACHINE_NAME.isb-cgc.org
 CV_USER=cvproc
 USER_AND_MACHINE=${CV_USER}@${MACHINE_NAME}
 VM_REGION=us-west1
@@ -72,8 +76,8 @@ ZONE=$VM_REGION-b
 IP_REGION=us-central1
 IP_SUBNET=${IP_REGION}
 
-SERVER_ADMIN=wl@isb-cgc.org
-SERVER_ALIAS=www.mvm-dot-isb-cgc.appspot.com
+#SERVER_ADMIN=wl@isb-cgc.org
+#SERVER_ALIAS=www.mvm-dot-isb-cgc.appspot.com
 
 #
 # Create static external IP address if not already existan
@@ -83,9 +87,9 @@ then
     gcloud compute addresses create $STATIC_IP_ADDRESS --region $VM_REGION --project $PROJECT
 fi
 ### Get the numeric IP addr as SERVER_NAME
-ADDR_STRING=$(gcloud compute addresses describe $MACHINE_NAME --region $VM_REGION --project $PROJECT | grep address:)
-IFS=', ' read -r -a addr_string_array <<< "$ADDR_STRING"
-SERVER_NAME="${addr_string_array[1]}"
+#ADDR_STRING=$(gcloud compute addresses describe $MACHINE_NAME --region $VM_REGION --project $PROJECT | grep address:)
+#IFS=', ' read -r -a addr_string_array <<< "$ADDR_STRING"
+#SERVER_NAME="${addr_string_array[1]}"
 
 #
 # Delete existing VM, then spin up the new one:
@@ -112,4 +116,4 @@ fi
 #
 sleep 10
 gcloud compute scp $(dirname $0)/install_deps.sh "${USER_AND_MACHINE}":/home/"${CV_USER}" --zone "${ZONE}" --project "${PROJECT}"
-gcloud compute ssh --zone "${ZONE}" --project "${PROJECT}" "${USER_AND_MACHINE}" -- '/home/'"${CV_USER}"'/install_deps.sh' "${SERVER_ADMIN}" "${SERVER_NAME}" "${SERVER_ALIAS}" "${CONFIG_BUCKET}" "${WEBAPP}"
+gcloud compute ssh --zone "${ZONE}" --project "${PROJECT}" "${USER_AND_MACHINE}" -- '/home/'"${CV_USER}"'/install_deps.sh' "${BRANCH}" "${MACHINE_URL}" "${CONFIG_BUCKET}" "${WEBAPP}"

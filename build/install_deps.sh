@@ -8,9 +8,10 @@ VIEWER_VERSION=0.9
 #SERVER_ALIAS=$3
 #CONFIG_BUCKET=$4
 #WEBAPP=$5
-MACHINE_URL=$1
-CONFIG_BUCKET=$2
-WEBAPP=$3
+BRANCH=$1
+MACHINE_URL=$2
+CONFIG_BUCKET=$3
+WEBAPP=$4
 
 ### Trying the following to avoid spurious "Could not get lock /var/lib/dpkg/lock"
 ### errors that are sometimes seen with the following installs
@@ -34,7 +35,7 @@ wait_on_lock
 sudo apt-get -y install git
 
 ### The startup script is in the quip_distro repo
-git clone -b isb-cgc-webapp https://github.com/isb-cgc/quip_distro.git
+git clone -b $BRANCH https://github.com/isb-cgc/quip_distro.git
 cd quip_distro
 
 wait_on_lock
@@ -60,7 +61,7 @@ wait_on_lock
 ### Automatically run a script on rebooting
 # sudo sed -i '/By default/a \'$HOME'/quip_distro/run_viewer.sh '$VIEWER_VERSION' || exit 1' /etc/rc.local 
 #sudo sed -i '/By default/a \'$HOME'/quip_distro/startup.sh '$VIEWER_VERSION' '$SERVER_ADMIN' '$SERVER_NAME' '$SERVER_ALIAS' '$WEBAPP' || exit 1' /etc/rc.local 
-sudo sed -i '/By default/a \'$HOME'/quip_distro/startup.sh '$VIEWER_VERSION' '$SERVER_ADMIN' '$WEBAPP' || exit 1' /etc/rc.local
+sudo sed -i '/By default/a \'$HOME'/quip_distro/startup.sh '$VIEWER_VERSION' '$BRANCH' '$WEBAPP' || exit 1' /etc/rc.local
 
 ### Install nginx and certbot
 ./build/install_nginx.sh $CONFIG_BUCKET $MACHINE_URL
