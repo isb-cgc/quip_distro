@@ -3,18 +3,17 @@
 # We want to execute run_viewer.sh as the same user that instantiated the VM.
 
 # $1=VIEWER_VERSION
-# $2=BRANCH
-# $3=WEBAPP
+# $2=WEBAPP
 
 set -x
 
 PROGNAME=$(basename "$0")
 
-if [ "$#" -ne 5 ]; then
-    echo "Usage: ./$PROGNAME <quip-viewer version> <branch> <webapp>"
+if [ "$#" -ne 2 ]; then
+    echo "Usage: ./$PROGNAME <quip-viewer version> <webapp>"
     exit 1;
 fi
 
 cd /home/cvproc/quip_distro
 
-./run_viewer.sh $1 $2 $3
+./run_viewer.sh $1 $2

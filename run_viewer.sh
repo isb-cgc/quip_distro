@@ -11,7 +11,6 @@ if [ "$#" -ne 2 ]; then
     exit 1;
 fi
 
-
 echo "Removing existing containers"
 sudo docker rm -f quip-viewer
 
@@ -43,6 +42,8 @@ VIEWER_PORT=5001
 #CONFIGS_DIR=$(echo $STORAGE_FOLDER/configs)
 
 ### Get the previously created viewer container from GCR 
+PATH=/usr/lib/google-cloud-sdk/bin:`echo $PATH`
+gcloud auth configure-docker
 docker pull gcr.io/isb-cgc/quip_viewer:$VIEWER_VERSION
 
 #if [[ "$(docker images -q quip-viewer:$VIEWER_VERSION 2> /dev/null)" == "" ]]; then
