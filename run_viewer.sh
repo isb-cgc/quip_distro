@@ -32,7 +32,7 @@ sudo docker network create quip_nw
 #mkdir -p $IMAGES_DIR 
 #mkdir -p $DATABASE_DIR
 
-VIEWER_PORT=5001
+VIEWER_PORT=8042
 #IMAGELOADER_PORT=6002
 #FINDAPI_PORT=3000
 
@@ -50,7 +50,7 @@ fi
 
 ## Run viewer container
 viewer_container=$(sudo docker run --privileged --name=quip-viewer --net=quip_nw -itd \
-    -p $VIEWER_PORT:443 \
+    -p $VIEWER_PORT:80 \
     -e SERVER_ADMIN=$2 \
     -e SERVER_NAME=$3 \
     -e SERVER_ALIAS=$4 \
