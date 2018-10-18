@@ -31,6 +31,9 @@ function wait_on_lock()
 }
 
 wait_on_lock
+sudo apt-get update
+
+wait_on_lock
 ### Install git
 sudo apt-get -y install git
 

@@ -63,7 +63,7 @@ fi
 #	MACHINE_TAG=http-server
 #fi
 
-MACHINE_TAG=camic-viewer-vm
+MACHINE_TAGS=camic-viewer-vm,http-server,ssh-from-whc,http-from-whc
 BASE_NAME=camic-viewer
 STATIC_IP_ADDRESS=$BASE_NAME-$1
 MACHINE_NAME=$BASE_NAME-$1
@@ -103,12 +103,12 @@ gcloud compute instances create "${MACHINE_NAME}" --description "${MACHINE_DESC}
 #fi
 
 #
-# Add network tag to machine:
+# Add network tags to machine:
 #
 sleep 10
-if [ -n "$MACHINE_TAG" ]
+if [ -n "$MACHINE_TAGS" ]
 then
-    gcloud compute instances add-tags "${MACHINE_NAME}" --tags "${MACHINE_TAG}" --project "${PROJECT}" --zone "${ZONE}"
+    gcloud compute instances add-tags "${MACHINE_NAME}" --tags="${MACHINE_TAGS}" --project "${PROJECT}" --zone "${ZONE}"
 fi
 
 #
