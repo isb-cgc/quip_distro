@@ -43,7 +43,10 @@ VIEWER_PORT=5001
 
 ### Get the previously created viewer container from GCR 
 PATH=/usr/lib/google-cloud-sdk/bin:`echo $PATH`
-gcloud auth configure-docker
+echo $PATH
+### Extending the path above should be sufficient, but seem to need to create the following link
+sudo ln -s /usr/lib/google-cloud-sdk/bin/docker-credential-gcloud /usr/bin/docker-credential-gcloud
+sudo gcloud auth configure-docker
 docker pull gcr.io/isb-cgc/quip_viewer:$VIEWER_VERSION
 
 #if [[ "$(docker images -q quip-viewer:$VIEWER_VERSION 2> /dev/null)" == "" ]]; then
