@@ -76,9 +76,6 @@ ZONE=$VM_REGION-b
 IP_REGION=us-central1
 IP_SUBNET=${IP_REGION}
 
-#SERVER_ADMIN=wl@isb-cgc.org
-#SERVER_ALIAS=www.mvm-dot-isb-cgc.appspot.com
-
 #
 # Create static external IP address if not already existan
 addresses=$(gcloud compute addresses list --project $PROJECT|grep $STATIC_IP_ADDRESS)

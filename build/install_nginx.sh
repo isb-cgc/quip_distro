@@ -1,16 +1,19 @@
 #!/bin/bash
 
+set -x
+
 CONFIG_BUCKET=$1
 MACHINE_URL=$2
 
-set -x
-
 # First install nginx
 sudo apt-get install -y nginx
+
+# Replace default config and insert domain name of this VM
 sudo cp ./nginx/nginx.conf /etc/nginx/nginx.conf
+sudo sed -ie 's/SERVER_NAME/$MACHINE_URL/' /etc/nginx/nginx.conf
 
 # Now install certbot
-sudo rm -rf /etc/letsencrypt
+#sudo rm -rf /etc/letsencrypt
 
 sudo apt-get update
 sudo apt-get install software-properties-common
@@ -23,10 +26,7 @@ sudo gsutil cp gs://$CONFIG_BUCKET/ir_addr.txt .
 SERVER_ADMIN=`cat ir_addr.txt`
 sudo rm ir_addr.txt
 
-# We first delete any existing certs
-#sudo certbot delete --non-interactive
-
-# Then we create a new cert. Note that Let's Encrypt strictly limits creating new certs on the
+# Create a new cert. Note that Let's Encrypt strictly limits creating new certs on the
 # same domain to 10 in a one week period. 
 sudo certbot --nginx -m $SERVER_ADMIN -d $MACHINE_URL --redirect --agree-tos --non-interactive
 
