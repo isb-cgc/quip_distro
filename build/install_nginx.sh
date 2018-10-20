@@ -30,8 +30,9 @@ sudo rm ir_addr.txt
 # same domain to 10 in a one week period. 
 sudo certbot --nginx -m $SERVER_ADMIN -d $MACHINE_URL --redirect --agree-tos --non-interactive
 
-# Edit the letsencrypt config file so as to not enable TLS v1.0
+# Edit the letsencrypt config file so as to not enable TLS v1.0 and only use some strong ciphers     
 sudo sed -ie 's/TLSv1 / /' /etc/letsencrypt/options-ssl-nginx.conf
+sudo sed -ie 's/^ssl_ciphers.*/ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";/' /etc/letsencrypt/options-ssl-nginx.conf
 
 # Restart nginx
 sudo nginx -s stop
