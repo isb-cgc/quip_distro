@@ -16,4 +16,4 @@ fi
 
 cd /home/cvproc/quip_distro
 
-./run_viewer.sh $1 $2
+./run_viewer.sh $1 $2 &> log.txt
