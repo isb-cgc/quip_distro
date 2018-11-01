@@ -7,6 +7,7 @@ BRANCH=$1
 MACHINE_URL=$2
 CONFIG_BUCKET=$3
 WEBAPP=$4
+PROJECT=$5
 
 ### See if anything is still holding lock on /var/lib/dpkg/lock                                                                
 function wait_on_lock()
@@ -39,7 +40,7 @@ wait_on_lock
 sudo sed -i '/By default/a \'$HOME'/quip_distro/startup.sh '$VIEWER_VERSION' '$WEBAPP' || exit 1' /etc/rc.local
 
 ### Install nginx and certbot
-./build/install_nginx.sh $CONFIG_BUCKET $MACHINE_URL
+./build/install_nginx.sh $CONFIG_BUCKET $MACHINE_URL $PROJECT
 
 ### Install and run Tenable
 # Get Tenable the key from GCS                                                                                  
