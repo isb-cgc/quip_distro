@@ -37,7 +37,7 @@ wait_on_lock
 ./build/install_docker.sh
 
 ### Automatically run a script on rebooting
-sudo sed -i '/By default/a \'$HOME'/quip_distro/startup.sh '$VIEWER_VERSION' '$WEBAPP' || exit 1' /etc/rc.local
+sudo sed -i '/By default/a \'$HOME'/quip_distro/startup.sh '$VIEWER_VERSION' '$WEBAPP' '$PROJECT' || exit 1' /etc/rc.local
 
 ### Install nginx and certbot
 ./build/install_nginx.sh $CONFIG_BUCKET $MACHINE_URL $PROJECT
