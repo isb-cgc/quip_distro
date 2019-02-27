@@ -44,7 +44,9 @@ VIEWER_PORT=5001
 PATH=/usr/lib/google-cloud-sdk/bin:`echo $PATH`
 echo $PATH
 ### Extending the path above should be sufficient, but seem to need to create the following link
-sudo ln -s /usr/lib/google-cloud-sdk/bin/docker-credential-gcloud /usr/bin/docker-credential-gcloud
+DCG=$(sudo find /snap -name docker-credential-gcloud)
+sudo rm /usr/bin/docker-credential-gcloud
+sudo ln -s $DCG /usr/bin/docker-credential-gcloud
 sudo gcloud auth configure-docker --quiet
 sudo docker pull gcr.io/$PROJECT/quip_viewer:$VIEWER_VERSION
 
