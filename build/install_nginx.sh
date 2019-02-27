@@ -16,7 +16,7 @@ sudo apt-get install -y python-certbot-nginx
 
 # Get the saved keys, etc. if they exist                                                                                                                  
 sudo gsutil cp gs://$CONFIG_BUCKET/dicom_viewer/letsencrypt.tar letsencrypt.tar
-if [ ! -f ./letsencrypt.tar ]; then
+if [ -f ./letsencrypt.tar ]; then
     sudo tar xvf letsencrypt.tar -C /
     sudo rm letsencrypt.tar
 fi
