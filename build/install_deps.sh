@@ -66,6 +66,9 @@ chmod 0755 virus_scan
 sudo cp virus_scan /etc/cron.daily/
 sudo sed -ie 's/Checks 24/Checks 2/' /etc/clamav/freshclam.conf
 
+##Make sure everything in $HOME is owned by $USER
+sudo chmod -R $USER:$USER $HOME
+
 ### Do the update/upgrade thing
 sudo apt-get -y update
 sudo apt-get -y upgrade
