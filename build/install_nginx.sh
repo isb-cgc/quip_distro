@@ -13,7 +13,13 @@ sudo apt-get install software-properties-common
 sudo add-apt-repository -y ppa:certbot/certbot
 sudo apt-get update
 sudo apt-get install -y python-certbot-nginx 
-sudo nginx
+
+# Get the saved keys, etc. if they exist                                                                                                                  
+sudo gsutil cp gs://$CONFIG_BUCKET/dicom_viewer/letsencrypt.tar letsencrypt.tar
+if [ ! -f ./letsencrypt.tar ]; then
+    sudo tar xvf letsencrypt.tar -C /
+    sudo rm letsencrypt.tar
+fi
 
 sudo certbot certificates
 
@@ -24,11 +30,12 @@ if [ ! -z "$CERT" ]; then
     #echo Yes
     #exit
 
-    # A certificate exists. Get the saved keys, etc. and nginx.conf
-    sudo gsutil cp gs://$CONFIG_BUCKET/dicom_viewer/letsencrypt.tar letsencrypt.tar
-    sudo tar xvf letsencrypt.tar -C /
-    sudo rm letsencrypt.tar
-
+#    # A certificate exists. Get the saved keys, etc. and nginx.conf
+#    sudo gsutil cp gs://$CONFIG_BUCKET/dicom_viewer/letsencrypt.tar letsencrypt.tar
+#    sudo tar xvf letsencrypt.tar -C /
+#    sudo rm letsencrypt.tar
+    
+    # Get the saved nginx.conf
     sudo gsutil cp gs://$CONFIG_BUCKET/dicom_viewer/nginx.conf /etc/nginx/nginx.conf
 else
     echo No
