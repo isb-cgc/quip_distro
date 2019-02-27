@@ -39,7 +39,7 @@ wait_on_lock
 ### Automatically run a script on rebooting
 #sudo sed -i '/By default/a \'$HOME'/quip_distro/startup.sh '$VIEWER_VERSION' '$WEBAPP' '$PROJECT' || exit 1' /etc/rc.local
 crontab -l > mycron
-echo "@reboot $HOME/quip_distro/startup.sh $VIEWER_VERSION $WEBAPP $PROJECT2>&1 | tee $HOME/quip_distro/log.txt" >> mycron
+echo "@reboot $HOME/quip_distro/startup.sh $VIEWER_VERSION $WEBAPP $PROJECT 2>&1 | tee $HOME/quip_distro/log.txt" >> mycron
 crontab mycron
 rm mycron
 
