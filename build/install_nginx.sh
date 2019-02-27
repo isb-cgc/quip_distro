@@ -15,7 +15,7 @@ sudo apt-get update
 sudo apt-get install -y python-certbot-nginx 
 
 # Get the saved keys, etc. if they exist                                                                                                                  
-sudo gsutil cp gs://$CONFIG_BUCKET/dicom_viewer/letsencrypt.tar letsencrypt.tar
+sudo gsutil cp gs://$CONFIG_BUCKET/camic_viewer/letsencrypt.tar letsencrypt.tar
 if [ -f ./letsencrypt.tar ]; then
     sudo tar xvf letsencrypt.tar -C /
     sudo rm letsencrypt.tar
@@ -36,10 +36,10 @@ if [ ! -z "$CERT" ]; then
 #    sudo rm letsencrypt.tar
     
     # Get the saved nginx.conf
-    sudo gsutil cp gs://$CONFIG_BUCKET/dicom_viewer/nginx.conf /etc/nginx/nginx.conf
+    sudo gsutil cp gs://$CONFIG_BUCKET/camic_viewer/nginx.conf /etc/nginx/nginx.conf
 else
-    echo No
-    exit
+    #echo No
+    #exit
     # Replace default config and insert domain name of this VM
     sudo cp ./nginx/nginx.conf /etc/nginx/nginx.conf
     sudo sed -ie "s/SERVER_NAME/$MACHINE_URL/" /etc/nginx/nginx.conf
@@ -60,11 +60,11 @@ else
 
     # Save the resulting /etc/letsencrypt.
     sudo tar cvf letsencrypt.tar /etc/letsencrypt
-    sudo gsutil cp letsencrypt.tar gs://$CONFIG_BUCKET/dicom_viewer/letsencrypt.tar
+    sudo gsutil cp letsencrypt.tar gs://$CONFIG_BUCKET/camic_viewer/letsencrypt.tar
     sudo rm letsencrypt.tar
     
     # Save the nginx config. It was modified by certbot
-    sudo gsutil cp /etc/nginx/nginx.conf gs://$CONFIG_BUCKET/dicom_viewer/nginx.conf
+    sudo gsutil cp /etc/nginx/nginx.conf gs://$CONFIG_BUCKET/camic_viewer/nginx.conf
 fi
   
 # Restart nginx
