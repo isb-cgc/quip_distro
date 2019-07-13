@@ -11,7 +11,8 @@ To configure and launch such a VM, execute:
 
 where `<VM type>` is one of prod, dev, test, or uat.
 
-This script will first create a static external IP address, also called camic-viewer-xxx, if such a IP address does not already exist. It will then delete any existing VM having that name and launch a new suitably configured VM. It will then scp copy and execute build/install_deps.sh on the new VM. install_deps.sh installs git and docker, performs apt-get update/upgrade and reboots the VM. On rebooting, startup.sh script builds the quip-viewer docker image, if it does not already exist, and runs that image.
+This script will first create a static external IP address, also called camic-viewer-xxx, if such a IP address does not already exist. It will then delete any existing VM having that name and launch a new suitably configured VM. It will then scp copy and execute build/install_deps.sh on the new VM. install_deps.sh installs git and docker, performs apt-get update/upgrade and reboots the VM. 
+On rebooting, startup.sh script calls run_viewer.sh, which, in turn, pulls a docker container from GCR. The docker image includes the caMicroscope repo. Thus, if a change is made to the caMicroscope repo, the docker container must be reboot and pushed to GCR. Note that there is a separate GCR for each of the projects (isb-cgc, isb-cgc-test, isb-cgc-uat).
 
 Note that subsequent discussion applies to the master full QuIP implementation.
 
