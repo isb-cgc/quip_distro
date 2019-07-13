@@ -83,10 +83,6 @@ if [ -z "$addresses" ]
 then
     gcloud compute addresses create $STATIC_IP_ADDRESS --region $VM_REGION --project $PROJECT
 fi
-### Get the numeric IP addr as SERVER_NAME
-#ADDR_STRING=$(gcloud compute addresses describe $MACHINE_NAME --region $VM_REGION --project $PROJECT | grep address:)
-#IFS=', ' read -r -a addr_string_array <<< "$ADDR_STRING"
-#SERVER_NAME="${addr_string_array[1]}"
 
 #
 # Delete existing VM, then spin up the new one:
