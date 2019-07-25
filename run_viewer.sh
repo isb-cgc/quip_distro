@@ -60,5 +60,6 @@ viewer_container=$(sudo docker run --privileged --name=quip-viewer --net=quip_nw
     -p $VIEWER_PORT:80 \
     -e WEBAPP=$WEBAPP \
     -v /etc/apache2/ssl:/etc/apache2/ssl \
+    -v $HOME/.aws:/var/www/.aws \
     gcr.io/$PROJECT/quip_viewer:$VIEWER_VERSION)
 echo "Started viewer container: " $viewer_container
