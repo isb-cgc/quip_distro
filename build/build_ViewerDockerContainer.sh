@@ -9,15 +9,15 @@ git clone -b $BRANCH https://github.com/isb-cgc/ViewerDockerContainer.git ./View
 docker build -t quip_viewer:$VIEWER_VERSION -f ViewerDockerContainer/Dockerfile ViewerDockerContainer
 
 gcloud config set project isb-cgc
-docker tag quip_viewer:$VIEWER_VERSION gcs.io/isb-cgc/quip_viewer:$VIEWER_VERSION
-docker push gcs.io/isb-cgc/quip_viewer:$VIEWER_VERSION
+docker tag quip_viewer:$VIEWER_VERSION gcr.io/isb-cgc/quip_viewer:$VIEWER_VERSION
+docker push gcr.io/isb-cgc/quip_viewer:$VIEWER_VERSION
 
 gcloud config set project isb-cgc-test
-docker tag quip_viewer:$VIEWER_VERSION gcs.io/isb-cgc-test/quip_viewer:$VIEWER_VERSION
-docker push gcs.io/isb-cgc-test/quip_viewer:$VIEWER_VERSION
+docker tag quip_viewer:$VIEWER_VERSION gcr.io/isb-cgc-test/quip_viewer:$VIEWER_VERSION
+docker push gcr.io/isb-cgc-test/quip_viewer:$VIEWER_VERSION
 
 gcloud config set project isb-cgc-uat
-docker tag quip_viewer:$VIEWER_VERSION gcs.io/isb-cgc-uat/quip_viewer:$VIEWER_VERSION
-docker push gcs.io/isb-cgc-uat/quip_viewer:$VIEWER_VERSION
+docker tag quip_viewer:$VIEWER_VERSION gcr.io/isb-cgc-uat/quip_viewer:$VIEWER_VERSION
+docker push gcr.io/isb-cgc-uat/quip_viewer:$VIEWER_VERSION
 
 rm -rf ViewerDockerContainer
