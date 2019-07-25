@@ -2,7 +2,7 @@
 
 set -x
 
-VIEWER_VERSION=0.9
+VIEWER_VERSION=0.91
 BRANCH=$1
 MACHINE_URL=$2
 CONFIG_BUCKET=$3
@@ -42,6 +42,10 @@ crontab -l > mycron
 echo "@reboot $HOME/quip_distro/startup.sh $VIEWER_VERSION $WEBAPP $PROJECT 2>&1 | tee $HOME/quip_distro/log.txt" >> mycron
 crontab mycron
 rm mycron
+
+### Get interoperability credentials needed by the goofys fuse file system running in the quip_viewer Docker container
+mkdir $HOME/.aws
+gsutil cp  $CONFIG_BUCKET/camic_viewer/interoperability_credentials $HOME/.aws/credentials
 
 ### Install nginx and certbot
 ./build/install_nginx.sh $CONFIG_BUCKET $MACHINE_URL $PROJECT
