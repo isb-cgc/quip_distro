@@ -49,11 +49,13 @@ sudo rm /usr/bin/docker-credential-gcloud
 sudo ln -s $DCG /usr/bin/docker-credential-gcloud
 sudo gcloud auth configure-docker --quiet
 sudo docker pull gcr.io/$PROJECT/quip_viewer:$VIEWER_VERSION
-
-#if [[ "$(docker images -q quip-viewer:$VIEWER_VERSION 2> /dev/null)" == "" ]]; then
-#  git clone -b $BRANCH https://github.com/isb-cgc/ViewerDockerContainer.git ./ViewerDockerContainer
-#  sudo docker build -t quip_viewer:$VIEWER_VERSION -f ViewerDockerContainer/Dockerfile ViewerDockerContainer
-#fi
+if [[ $? == 1 ]; then
+    echo "Pulling from GCR failed. Build it instead"
+    if [[ "$(docker images -q quip-viewer:$VIEWER_VERSION 2> /dev/null)" == "" ]]; then
+        git clone -b $BRANCH https://github.com/isb-cgc/ViewerDockerContainer.git ./ViewerDockerContainer
+        sudo docker build -t quip_viewer:$VIEWER_VERSION -f ViewerDockerContainer/Dockerfile ViewerDockerContainer
+    fi
+fi  
 
 ## Run viewer container
 viewer_container=$(sudo docker run --privileged --name=quip-viewer --net=quip_nw -itd \
