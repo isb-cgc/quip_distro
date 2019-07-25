@@ -7,7 +7,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 #Set this according to the branch being developed/executed
-BRANCH=isb-cgc-webapp-certbot
+BRANCH=$(git branch | grep \* | cut -d ' ' -f2)
 
 #arr = ['prod','dev','test','uat']
 declare -a arr=('prod' 'dev' 'test' 'uat')
