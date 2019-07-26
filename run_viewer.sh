@@ -44,12 +44,12 @@ VIEWER_PORT=5001
 PATH=/usr/lib/google-cloud-sdk/bin:`echo $PATH`
 echo $PATH
 ### Extending the path above should be sufficient, but seem to need to create the following link
-DCG=$(sudo find /snap -name docker-credential-gcloud | grep 89)
+DCG=$(sudo find /snap -name docker-credential-gcloud | grep -m 1 docker-credential-gcloud)
 sudo rm /usr/bin/docker-credential-gcloud
 sudo ln -s $DCG /usr/bin/docker-credential-gcloud
 sudo gcloud auth configure-docker --quiet
 sudo docker pull gcr.io/$PROJECT/quip_viewer:$VIEWER_VERSION
-if [[ $? == 1 ]; then
+if [[ $? == 1 ]]; then
     echo "Pulling from GCR failed. Build it instead"
     if [[ "$(docker images -q quip-viewer:$VIEWER_VERSION 2> /dev/null)" == "" ]]; then
         git clone -b $BRANCH https://github.com/isb-cgc/ViewerDockerContainer.git ./ViewerDockerContainer
