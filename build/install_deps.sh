@@ -45,7 +45,7 @@ rm mycron
 
 ### Get interoperability credentials needed by the goofys fuse file system running in the quip_viewer Docker container
 mkdir $HOME/.aws
-gsutil cp  $CONFIG_BUCKET/camic_viewer/interoperability_credentials $HOME/.aws/credentials
+sudo gsutil cp  gs://$CONFIG_BUCKET/camic_viewer/interoperability_credentials $HOME/.aws/credentials
 
 ### Install nginx and certbot
 ./build/install_nginx.sh $CONFIG_BUCKET $MACHINE_URL $PROJECT

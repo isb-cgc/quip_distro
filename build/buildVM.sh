@@ -7,7 +7,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 #Set this according to the branch being developed/executed
-BRANCH=$(git branch | grep \* | cut -d ' ' -f2)
+BRANCH=$(git branch --show-current)
 
 #arr = ['prod','dev','test','uat']
 declare -a arr=('prod' 'dev' 'test' 'uat')
@@ -15,18 +15,24 @@ if [[ ${arr[*]} =~ $1 ]]
 then
     declare -a arr1=('prod','dev')
 
-    if [[ ${arr1[*]} =~ $1 ]]
+    if [ $1 == 'prod' ]
     then
 	PROJECT=isb-cgc
+    elif [ $1 == 'dev' ]
+    then
+	PROJECT=isb-cgc-dev-1
     else
 	PROJECT=isb-cgc-$1
     fi
 
     declare -a arr2=('dev','prod')
 
-    if [[ ${arr2[*]} =~ $1 ]]
+    if [ $1 == 'prod' ]
     then
 	CONFIG_BUCKET=web-app-deployment-files/$1
+    elif [ $1 == 'dev' ]
+    then
+        CONFIG_BUCKET=webapp-deployment-files-isb-cgc-dev
     else
 	CONFIG_BUCKET=webapp-deployment-files-$1
     fi
@@ -36,7 +42,7 @@ then
 	WEBAPP=isb-cgc.appspot.com
     elif [ $1 == 'dev' ]
     then
-	WEBAPP=mvm-dot-isb-cgc.appspot.com
+	WEBAPP=dev.isb-cgc.org
     elif [ $1 == 'test' ]
     then
 	WEBAPP=isb-cgc-test.appspot.com
@@ -63,7 +69,7 @@ fi
 #	MACHINE_TAG=http-server
 #fi
 
-MACHINE_TAGS=camic-viewer-vm,http-server,ssh-from-whc,http-from-whc
+MACHINE_TAGS=viewer-vm,ssh-from-whc,http-from-whc
 BASE_NAME=camic-viewer
 STATIC_IP_ADDRESS=$BASE_NAME-$1
 MACHINE_NAME=$BASE_NAME-$1
@@ -77,7 +83,7 @@ IP_REGION=us-central1
 IP_SUBNET=${IP_REGION}
 
 #
-# Create static external IP address if not already existan
+# Create static external IP address if not already existant
 addresses=$(gcloud compute addresses list --project $PROJECT|grep $STATIC_IP_ADDRESS)
 if [ -z "$addresses" ]
 then
