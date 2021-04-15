@@ -5,6 +5,7 @@
 # $1=VIEWER_VERSION
 # $2=WEBAPP
 # $3=PROJECT
+# $4=BRANCH
 set -x
 
 PROGNAME=$(basename "$0")
@@ -17,4 +18,4 @@ fi
 cd /home/cvproc/quip_distro
 
 sudo rm log.txt
-./run_viewer.sh $1 $2 $3 &> log.txt
+./run_viewer.sh $1 $2 $3 $4 &> log.txt

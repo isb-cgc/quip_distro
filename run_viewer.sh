@@ -6,6 +6,7 @@ set -x
 VIEWER_VERSION=$1
 WEBAPP=$2
 PROJECT=$3
+BRANCH=$4
 
 PROGNAME=$(basename "$0")
 

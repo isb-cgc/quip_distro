@@ -37,9 +37,9 @@ wait_on_lock
 ./build/install_docker.sh
 
 ### Automatically run a script on rebooting
-#sudo sed -i '/By default/a \'$HOME'/quip_distro/startup.sh '$VIEWER_VERSION' '$WEBAPP' '$PROJECT' || exit 1' /etc/rc.local
-crontab -l > mycron
-echo "@reboot $HOME/quip_distro/startup.sh $VIEWER_VERSION $WEBAPP $PROJECT 2>&1 | tee $HOME/quip_distro/log.txt" >> mycron
+#sudo sed -i '/By default/a \'$HOME'/quip_distro/startup.sh '$VIEWER_VERSION' '$WEBAPP' '$PROJECT' '$BRANCH' || exit 1' /etc/rc.local
+#crontab -l > mycron
+echo "@reboot $HOME/quip_distro/startup.sh $VIEWER_VERSION $WEBAPP $PROJECT $BRANCH 2>&1 | tee $HOME/quip_distro/log.txt" > mycron
 crontab mycron
 rm mycron
 
